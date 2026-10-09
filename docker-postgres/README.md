@@ -73,3 +73,57 @@ And there you go! You now have PostgreSQL running locally through Docker, connec
 ## Upcoming
 
 In the upcoming commit, we'll see how to connect the generated schema files to the backend by exporting them.
+
+## Integrating into the Backend
+
+Simply copy the `db.ts` file from the Prisma + Bun v7 documentation guide and paste it into the `index.ts` file inside the `db` folder.
+
+And there you go! Our generated Prisma client is ready to be exported.
+
+Just a few more steps.
+
+### 1. Export the DB Package
+
+Add the following to the `package.json` file inside the `db` folder:
+
+```json
+"exports": {
+  "./": "./index.ts"
+}
+```
+
+**Important:** Use the `exports` keyword, not `export`. Believe me, it took me almost 20 minutes to figure out what was wrong, so consider this an early warning!
+
+### 2. Initialize the Backend
+
+Before importing the DB package, make sure your backend is initialized.
+
+Inside the backend folder, run:
+
+```bash
+bun init .
+bun add express
+bun add -d @types/express
+```
+
+### 3. Add the DB Dependency
+
+In the backend's `package.json`, add the DB package to `peerDependencies`:
+
+```json
+"peerDependencies": {
+  "db": "*"
+}
+```
+
+Now, run `bun install` from the root of your Turborepo to install the dependencies.
+
+### 4. Import Prisma into the Backend
+
+You can now use the Prisma client in your backend like this:
+
+```typescript
+import { prisma } from "db";
+```
+
+That's it! Your backend can now access the Prisma client exported from your DB package.

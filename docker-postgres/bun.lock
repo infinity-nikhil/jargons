@@ -19,6 +19,7 @@
         "@types/bun": "latest",
       },
       "peerDependencies": {
+        "db": "*",
         "typescript": "^7",
       },
     },

@@ -8,3 +8,5 @@ const adapter = new PrismaPg({
 export const prisma = new PrismaClient({
   adapter,
 });
+
+//this file exports the prisma client
